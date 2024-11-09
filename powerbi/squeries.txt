@@ -1,0 +1,24 @@
+Write an SQL query on the database from task 1, which will display a list of those users who bought any animal feed for the period August 1-15, except "Kitekat cat food, with rabbit in sauce, 85 g". Attach it in a text document.
+
+SELECT DISTINCT o.user_id
+FROM orders o
+JOIN order_lines ol ON o.order_id = ol.order_id
+JOIN products p ON ol.product_id = p.product_id
+WHERE o.order_date BETWEEN '2017-08-01' AND '2017-08-15'
+  AND p.category = 'Animal Feed'
+  AND p.product_name != 'Kitekat cat food, with rabbit in sauce, 85 g'
+
+
+
+Write an SQL query that will display a list of the top 5 most common products in user orders in St. Petersburg for the period August 15-30. Attach it in the same text document where you wrote the request from the previous paragraph.
+
+SELECT p.product_name, COUNT(*) AS product_count
+FROM orders o
+JOIN order_lines ol ON o.order_id = ol.order_id
+JOIN products p ON ol.product_id = p.product_id
+JOIN warehouses w ON o.warehouse_id = w.warehouse_id
+WHERE o.order_date BETWEEN '2017-08-15' AND '2017-08-30'
+  AND w.city = 'Saint Petersburg'
+GROUP BY p.product_name
+ORDER BY product_count DESC
+LIMIT 5;
